@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <title>week 9 in class</title>
+    <style>
+      .circle {
+        width: 200px;
+        height: 200px;
+        border-radius: 100px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+      }
+
+      .red {
+        background-color: red;
+      }
+
+      .blue {
+        background-color: royalblue;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- <p id="special">no more doc.getElementById</p> -->
+    <p id="points"></p>
+
+    <div class="circle red"></div>
+    <div class="circle blue"></div>
+    <div class="circle blue"></div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script>
+      // var specialParagraph = $("#special");
+      // $(specialParagraph).text("This is the new hotness")
+      // .css('color','blue')
+      // .css('fontSize', '35px');
+      var currentPoints = 0;
+      var circles = $(".circle");
+      var points = $("#points");
+
+      $(circles).each(function() {
+        //console.log(this);
+        $(this).click(determinePoints);
+      });
+
+      setInterval(function() {
+        moveCircles();
+      }, 1000);
+
+      function moveCircles() {
+        $(circles).each(function() {
+          //console.log(this);
+          var randX = Math.floor(Math.random() * 100);
+          var randY = Math.floor(Math.random() * 100);
+
+          $(this).css('top', `${randY}%`).css('left', `${randX}%`);
+          
+        });
+      }
+
+      function determinePoints(event) {
+        // red or blue clicked
+        console.log("clickity click click", event.target)
+
+        if( $(event.target).hasClass('blue') ) {
+          updatePoints(5);
+        } else {
+          updatePoints(10);
+        }
+      }
+      
+      function updatePoints(newPoints) {
+        currentPoints += newPoints;
+        $(points).text(currentPoints);
+      }
+    </script>
+      
+  </body>
+</html>
