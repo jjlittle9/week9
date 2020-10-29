@@ -26,40 +26,68 @@
       <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
     </div>
 
-    <script>
-      var game_hours_url = "https://mufall2020-bit240.github.io/professor_api/professor/video_game_hours.json";
-      var anxiety_url = "https://mufall2020-bit240.github.io/professor_api/professor/anxiety.json"
-
-      fetch(game_hours_url).then(function(networkRequest) {
-        console.log(networkRequest);
-        return networkRequest.json();
-      }).then(function(jsonData) {
-        console.log("Json Data: ", jsonData);
-        createLineGraph(jsonData);
-        createPieChart(jsonData);
-      });
-      
-      fetch(anxiety_url).then(function(networkRequest) {
-        console.log(networkRequest);
-        return networkRequest.json();
-      }).then(function(jsonData) {
-        console.log("Json Data: ", jsonData);
-        createLineGraph(jsonData);
-        createPieChart(jsonData);
-      });
-      
-      function createPieChart() {
-        
-      }
-      
-      function createLineGraph() {
-        
-      }
-    </script>
-    
     <div id="chartContainer" style="height: 300px; width: 100%;"></div>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
   </body>
+
+  <script>
+    var game_hours_url = "https://mufall2020-bit240.github.io/professor_api/professor/video_game_hours.json";
+    var anxiety_url = "https://mufall2020-bit240.github.io/professor_api/professor/anxiety.json"
+    
+    $("#line").click(function() {
+      $(createLineGraph).show();
+    });
+    $("#pie").click(function() {
+      $("#chartContainer").show();
+    });
+    
+    fetch(anxiety_url).then(function(networkRequest) {
+      return networkRequest.json();
+    }).then(function(jsonData) {
+      createPieChart(jsonData.data);
+    });
+    
+    function createPieChart(data) {
+      var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        title: {
+          text: "Stress levels"
+        },
+        data: [{
+          type: "pie",
+          startAngle: 240,
+          yValueFormatString: "##0.00\"%\"",
+          indexLabel: "{label} {y}",
+          dataPoints: data
+        }]
+      });
+      chart.render();
+
+    }
+
+    fetch(game_hours_url).then(function(networkRequest) {
+      return networkRequest.json();
+      }).then(function(jsonData) {
+        createLineGraph(jsonData.data);
+      });
+    
+    function createLineGraph(data) {
+      var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        theme: "light2",
+        title:{
+          text: "Simple Line Chart"
+        },
+        data: [{
+          type: "line",
+          indexLabelFontSize: 16,
+          dataPoints: data
+        }]
+      });
+      chart.render();
+    }
+    
+  </script>
 </html>
